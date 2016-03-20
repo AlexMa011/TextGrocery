@@ -11,5 +11,5 @@ train_src = [
     ('sports', '四川丹棱举行全国长距登山挑战赛 近万人参与')
 ]
 custom_grocery.train(train_src)
-print custom_grocery.get_load_status()
-print custom_grocery.predict('考生必读：新托福写作考试评分标准')
+print(custom_grocery.get_load_status())
+print(custom_grocery.predict('考生必读：新托福写作考试评分标准'))

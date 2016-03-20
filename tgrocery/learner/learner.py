@@ -12,18 +12,18 @@ if sys.version_info[0] >= 3:
     import pickle as cPickle
     izip = zip
 
-    def unicode(string, setting):
+    def str(string, setting):
         return string
 else:
-    import cPickle
-    from itertools import izip
+    import pickle
+    
 
 util = CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'util.so.1'))
 
 LIBLINEAR_HOME = os.environ.get('LIBLINEAR_HOME') or os.path.dirname(os.path.abspath(__file__)) + '/liblinear'
 sys.path = [LIBLINEAR_HOME, LIBLINEAR_HOME + '/python'] + sys.path
 
-import liblinear
+from . import liblinear
 from liblinearutil import train as liblinear_train, predict as liblinear_predict, save_model as liblinear_save_model, load_model as liblinear_load_model
 
 __all__ = ['LearnerParameter', 'LearnerModel',
@@ -32,7 +32,7 @@ __all__ = ['LearnerParameter', 'LearnerModel',
 
 def print_debug(src):
     if os.environ.get('SHORTTEXTDEBUG'):
-        print('[DEBUG]: ' + src)
+        print(('[DEBUG]: ' + src))
 
 
 def fillprototype(f, restype, argtypes):
@@ -277,7 +277,7 @@ class LearnerModel(liblinear.model):
 
     def _reconstruct_label_idx(self):
         def _get_label_idx(nr_class, labels):
-            return dict(zip(labels[:nr_class], range(nr_class)))
+            return dict(list(zip(labels[:nr_class], list(range(nr_class)))))
 
         if self.c_model is not None:
             self.labelidx = _get_label_idx(self.c_model.nr_class, self.c_model.label)
@@ -338,10 +338,10 @@ class LearnerModel(liblinear.model):
         self.c_model = liblinear_load_model(path.join(model_dir,'liblinear_model'))
 
         options_file = path.join(model_dir,'options.pickle')
-        self.param_options = cPickle.load(open(options_file,'rb'))
+        self.param_options = pickle.load(open(options_file,'rb'))
 
         idf_file = path.join(model_dir,'idf.pickle')
-        self.idf = cPickle.load(open(idf_file,'rb'))
+        self.idf = pickle.load(open(idf_file,'rb'))
 
         self.__init__(self.c_model, LearnerParameter(self.param_options[0], self.param_options[1]), self.idf)
 
@@ -361,10 +361,10 @@ class LearnerModel(liblinear.model):
 
         liblinear_save_model(path.join(model_dir,'liblinear_model'), self.c_model)
         options_file = path.join(model_dir,'options.pickle')
-        cPickle.dump(self.param_options, open(options_file,'wb'),-1)
+        pickle.dump(self.param_options, open(options_file,'wb'),-1)
 
         idf_file = path.join(model_dir,'idf.pickle')
-        cPickle.dump(self.idf, open(idf_file,'wb'),-1)
+        pickle.dump(self.idf, open(idf_file,'wb'),-1)
 
     def __str__(self):
         if type(self.param_options) is tuple and len(self.param_options) > 0:
@@ -498,7 +498,7 @@ def predict(data_file_name, m, liblinear_opts=""):
 if __name__ == '__main__':
     argv = sys.argv
     if len(argv) < 2: #4 or '-v' not in argv:
-        print("{0} -v fold [other liblinear_options] [learner_opts] training-data".format(argv[0]))
+        print(("{0} -v fold [other liblinear_options] [learner_opts] training-data".format(argv[0])))
         sys.exit(-1)
     data_file_name = argv[-1]
     learner_opts, liblinear_opts = [], []

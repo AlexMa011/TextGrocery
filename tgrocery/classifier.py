@@ -2,9 +2,9 @@ import uuid
 import os
 import shutil
 
-from converter import GroceryTextConverter
+from .converter import GroceryTextConverter
 from .learner import *
-from base import *
+from .base import *
 
 
 class GroceryTextModel(object):
@@ -50,7 +50,7 @@ class GroceryTextModel(object):
         if self.svm_model is None:
             raise Exception('This model is not usable because svm model is not given')
         # process unicode type
-        if isinstance(text, unicode):
+        if isinstance(text, str):
             text = text.encode('utf-8')
         if not isinstance(text, str):
             raise TypeError('The argument should be plain text')
