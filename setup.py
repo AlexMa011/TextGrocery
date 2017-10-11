@@ -13,27 +13,32 @@ with open('README.rst') as f:
 
 class MakeCommand(install):
     def run(self):
-        os.system('make')
+        makecmd =  'nmake -f Makefile.win clean liball' if os.name == 'nt' else 'make'
+        os.system(makecmd)
         common_dir = 'tgrocery/learner'
+        libpostfix = '.dll' if os.name == 'nt' else '.so.1'
+        #cp = 'copy' if os.name == 'nt' else 'cp'
         target_dir = '%s/%s' % (self.build_lib, common_dir)
         self.mkpath(target_dir)
-        os.system('cp %s/util.so.1 %s' % (common_dir, target_dir))
+        self.copy_file('%s/util%s' % (common_dir, libpostfix), target_dir)
+        #os.system('cp %s/util.%s %s' % (common_dir, libpostfix, target_dir))
         common_dir = 'tgrocery/learner/liblinear'
         target_dir = '%s/%s' % (self.build_lib, common_dir)
         self.mkpath(target_dir)
-        os.system('cp %s/liblinear.so.1 %s' % (common_dir, target_dir))
+        self.copy_file('%s/liblinear%s' % (common_dir, libpostfix), target_dir)
+        #os.system('cp %s/liblinear.%s %s' % (common_dir, libpostfix, target_dir))
         install.run(self)
 
 
 setup(
     name='tgrocery',
-    version='0.1.3',
+    version='0.2.0',
     packages=['tgrocery', 'tgrocery.learner', 'tgrocery.learner.liblinear.python'],
-    url='https://github.com/2shou/TextGrocery',
+    url='https://github.com/cosmichut/TextGrocery',
     license='BSD',
-    author='2shou',
-    author_email='gavin.zgz@gmail.com',
-    description='A simple short-text classification tool based on LibLinear',
+    author='cosmichut',
+    author_email='cosmichut@msn.com',
+    description='A simple short-text classification tool based on LibLinear, for windows and linux both',
     long_description=LONG_DESCRIPTION,
     install_requires=['jieba'],
     keywords='text classification svm liblinear libshorttext',

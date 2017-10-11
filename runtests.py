@@ -24,7 +24,13 @@ class GroceryTestCase(unittest.TestCase):
         new_grocery = Grocery('test')
         new_grocery.load()
         assert grocery.get_load_status()
-        assert grocery.predict('考生必读：新托福写作考试评分标准') == 'education'
+        result = grocery.predict('just a testing')
+        print(result)
+        result = grocery.predict('考生必读：新托福写作考试评分标准')
+        print(result)
+        print("type of result is :",type(result))
+        assert str(grocery.predict('考生必读：新托福写作考试评分标准')) == 'education'
+        assert str(grocery.predict('法网')) == 'sports'
         # cleanup
         if self.grocery_name and os.path.exists(self.grocery_name):
             shutil.rmtree(self.grocery_name)

@@ -1,7 +1,7 @@
 .idea/
 .pypirc
 
-*.txt
+# *.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -12,6 +12,11 @@ __pycache__/
 *.o
 *.a
 *.svm
+
+#windows tmp
+*.obj
+*.dll
+*.lib
 
 # Distribution / packaging
 .Python

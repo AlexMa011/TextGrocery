@@ -2,11 +2,12 @@
 
 from ctypes import *
 from ctypes.util import find_library
-from os import path
+import os
 import sys
 
 # For unix the prefix 'lib' is not considered.
-liblinear = CDLL(path.join(path.dirname(path.abspath(__file__)), '../liblinear.so.1'))
+libpostfix = '.dll' if os.name == 'nt' else '.so.1' #support both windows and linux
+liblinear = CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../liblinear'+libpostfix))
 
 # Construct constants
 SOLVER_TYPE = ['L2R_LR', 'L2R_L2LOSS_SVC_DUAL', 'L2R_L2LOSS_SVC', 'L2R_L1LOSS_SVC_DUAL',\
@@ -37,18 +38,18 @@ class feature_node(Structure):
 
 def gen_feature_nodearray(xi, feature_max=None, issparse=True):
 	if isinstance(xi, dict):
-		index_range = list(xi.keys())
+		index_range = xi.keys()
 	elif isinstance(xi, (list, tuple)):
 		xi = [0] + xi  # idx should start from 1
-		index_range = list(range(1, len(xi)))
+		index_range = range(1, len(xi))
 	else:
 		raise TypeError('xi should be a dictionary, list or tuple')
 
 	if feature_max:
 		assert(isinstance(feature_max, int))
-		index_range = [j for j in index_range if j <= feature_max]
+		index_range = filter(lambda j: j <= feature_max, index_range)
 	if issparse: 
-		index_range = [j for j in index_range if xi[j] != 0]
+		index_range = filter(lambda j:xi[j] != 0, index_range)
 
 	index_range = sorted(index_range)
 	ret = (feature_node * (len(index_range)+2))()
@@ -117,7 +118,7 @@ class parameter(Structure):
 	def __str__(self):
 		s = ''
 		attrs = parameter._names + list(self.__dict__.keys())
-		values = [getattr(self, attr) for attr in attrs] 
+		values = map(lambda attr: getattr(self, attr), attrs) 
 		for attr, val in zip(attrs, values):
 			s += (' %s: %s\n' % (attr, val))
 		s = s.strip()

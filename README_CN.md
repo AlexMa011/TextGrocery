@@ -1,3 +1,68 @@
+修订说明
+==================
+TextGrocery 是基于LibShortText项目(http://www.csie.ntu.edu.tw/~cjlin/libshorttext)的开源项目，仅支持Linux平台。
+LibShortText项目原仅支持linux平台，但我已将其windows支持发布到github上，see:
+    https://github.com/cosmichut/libshorttext-crossplatform
+
+故本项目结合了以下三个项目：
+- LibShortText项目
+- TextGrocery原始项目，仅支持python2, 见 https://github.com/2shou/TextGrocery
+- TextGrocery Python3项目（fork from 2shou) ,见 https://github.com/prashnts/TextGrocery
+
+新的改动实现了以下目标:
+- 同时支持windows(X64)和linux平台，无需修改代码。
+- 支持Python3 (也同时支持python2)
+
+在windows上编译
+=========================
+
+use the following steps:
+
+1. Open "X64 Native Tools Command Prompt for VS2017" comand line tools.
+   also you can open a dos command window and set environment variables of VC++ like this, type
+
+        ""C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\amd64\vcvars64.bat""
+
+   You may have to modify the above command according which version of VC++/VS or where it is installed.
+
+2. change to root directory, and Type
+
+        nmake -f Makefile.win clean liball
+
+3. (Optional) To build 32-bit windows binaries, you must
+	(1) Setup "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\vcvars32.bat" instead of vcvars64.bat
+	(2) Change CFLAGS in every Makefile.win: /D _WIN64 to /D _WIN32
+
+        nmake -f Makefile.win clean liball
+
+4.  go to the ../demo ,and copy the command in demo.sh, and paste to command line to run:
+
+        python classify.py
+
+    notice: it runs several steps but possible error in code/codec
+
+在windows上安装
+=========================
+1. 由于安装过程含了编译，所以必须同上述编译一样，使用X64 Native Tools Command Prompt for VS2017
+2. go to root directory of this project, and Type
+
+        python setup.py install
+
+
+Todo List
+==============
+- 使用PEP 8规范化python代码（特别是liblinear部分）
+- 加入预编译windows dll，避免对VC++编译工具的依赖
+- 支持pip安装（会取个新名字，比如tgrocery-python3)
+
+
+Enjoy!
+
+Justin  @github: https://github.com/cosmichut   @2017/10/11
+
+
+==================原作者说明======================================
+
 TextGrocery
 ===========
 
