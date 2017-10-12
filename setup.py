@@ -11,10 +11,8 @@ with open('README.rst') as f:
     LONG_DESCRIPTION = f.read()
 
 
-class MakeCommand(install):
+class InstallCommand(install):
     def run(self):
-        makecmd =  'nmake -f Makefile.win clean liball' if os.name == 'nt' else 'make'
-        os.system(makecmd)
         common_dir = 'tgrocery/learner'
         libpostfix = '.dll' if os.name == 'nt' else '.so.1'
         #cp = 'copy' if os.name == 'nt' else 'cp'
@@ -30,6 +28,12 @@ class MakeCommand(install):
         install.run(self)
 
 
+class MakeAndInstallCommand(InstallCommand):
+    def run(self):
+        makecmd = 'nmake -f Makefile.win clean liball' if os.name == 'nt' else 'make'
+        os.system(makecmd)
+        InstallCommand.run(self)
+
 setup(
     name='tgrocery',
     version='0.2.0',
@@ -42,5 +46,5 @@ setup(
     long_description=LONG_DESCRIPTION,
     install_requires=['jieba'],
     keywords='text classification svm liblinear libshorttext',
-    cmdclass={'install': MakeCommand}
+    cmdclass={'install': InstallCommand, 'make_and_install': MakeAndInstallCommand}
 )

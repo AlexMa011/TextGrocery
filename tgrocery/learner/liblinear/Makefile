@@ -32,6 +32,5 @@ blas/blas.a: blas/*.c blas/*.h
 	make -C blas OPTFLAGS='$(CFLAGS)' CC='$(CC)';
 
 clean:
-	make -C blas clean
-	make -C matlab clean
+	#make -C blas clean
 	rm -f *~ tron.o linear.o train predict liblinear.so.$(SHVER)
