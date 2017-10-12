@@ -13,10 +13,21 @@ current project achieve goal:
 - support windows(X64) and linux both without need to change code
 - support python3 as well as python2
 
+Install on Windows(As well as under Linux)
+==========================================
+1. go to root directory of this project, and Type
+
+        python setup.py install
+ 
+2. OR, if you want to do build and install ,then type 
+
+        python setup.py make_and_install
+
+    notice: under windows, you need X64 Native Tools Command Prompt for VS2017 as "build on Windows"
+
 Build on Windows
 =========================
-
-use the following steps:
+follow the steps:
 
 1. Open "X64 Native Tools Command Prompt for VS2017" comand line tools.
    also you can open a dos command window and set environment variables of VC++ like this, type
@@ -40,25 +51,17 @@ use the following steps:
         python classify.py
 
     notice: it runs several steps but possible error in code/codec
-
-Install on Windows
-=========================
-1. because install step include compile ,so you must use X64 Native Tools Command Prompt for VS2017 as above
-2. go to root directory of this project, and Type
-
-        python setup.py install
-
-
+    
 Todo List
 ==============
 - python PEP 8 rule refactor
-- put windows dll to avoid dependancy on VC++ compiler.
 - support pip install , a new name like grocery-python3.
+- continue original author 2shou's plan
 
 
 Enjoy!
 
-Justin  @github: https://github.com/cosmichut   @2017/10/11
+Justin  @github: https://github.com/cosmichut   @2017/10/12
 
 
 ==================original README.md======================================

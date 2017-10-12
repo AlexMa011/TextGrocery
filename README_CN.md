@@ -13,10 +13,21 @@ LibShortText项目原仅支持linux平台，但我已将其windows支持发布�
 - 同时支持windows(X64)和linux平台，无需修改代码。
 - 支持Python3 (也同时支持python2)
 
+在windows上安装(Linux 上也类似)
+================================
+1. go to root directory of this project, and Type
+
+        python setup.py install
+ 
+2. OR, if you want to do build and install ,then type 
+
+        python setup.py make_and_install
+
+    notice: under windows, you need  X64 Native Tools Command Prompt for VS2017 as following:
+
 在windows上编译
 =========================
-
-use the following steps:
+follow the steps:
 
 1. Open "X64 Native Tools Command Prompt for VS2017" comand line tools.
    also you can open a dos command window and set environment variables of VC++ like this, type
@@ -40,25 +51,17 @@ use the following steps:
         python classify.py
 
     notice: it runs several steps but possible error in code/codec
-
-在windows上安装
-=========================
-1. 由于安装过程含了编译，所以必须同上述编译一样，使用X64 Native Tools Command Prompt for VS2017
-2. go to root directory of this project, and Type
-
-        python setup.py install
-
-
+    
 Todo List
 ==============
 - 使用PEP 8规范化python代码（特别是liblinear部分）
-- 加入预编译windows dll，避免对VC++编译工具的依赖
 - 支持pip安装（会取个新名字，比如tgrocery-python3)
+- continue original author 2shou's plan
 
 
 Enjoy!
 
-Justin  @github: https://github.com/cosmichut   @2017/10/11
+Justin  @github: https://github.com/cosmichut   @2017/10/12
 
 
 ==================原作者说明======================================
