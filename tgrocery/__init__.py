@@ -16,7 +16,8 @@ class GroceryNotTrainException(GroceryException):
 class Grocery(object):
     def __init__(self, name, custom_tokenize=None):
         self.name = name
-        if custom_tokenize is not None and not hasattr(custom_tokenize, '__call__'):
+        if custom_tokenize is not None and not hasattr(custom_tokenize,
+                                                       '__call__'):
             raise GroceryException('Tokenize func must be callable.')
         self.custom_tokenize = custom_tokenize
         self.model = None
@@ -24,12 +25,16 @@ class Grocery(object):
         self.train_svm_file = None
 
     def get_load_status(self):
-        return self.model is not None and isinstance(self.model, GroceryTextModel)
+        return self.model is not None and isinstance(self.model,
+                                                     GroceryTextModel)
 
     def train(self, train_src, delimiter='\t'):
-        text_converter = GroceryTextConverter(custom_tokenize=self.custom_tokenize)
+        text_converter = GroceryTextConverter(
+            custom_tokenize=self.custom_tokenize)
         self.train_svm_file = '%s_train.svm' % self.name
-        text_converter.convert_text(train_src, output=self.train_svm_file, delimiter=delimiter)
+        text_converter.convert_text(train_src,
+                                    output=self.train_svm_file,
+                                    delimiter=delimiter)
         # default parameter
         model = train(self.train_svm_file, '', '-s 4')
         self.model = GroceryTextModel(text_converter, model)
@@ -45,15 +50,22 @@ class Grocery(object):
             raise GroceryNotTrainException()
         return GroceryTest(self.model).test(text_src, delimiter)
 
-    def save(self):
+    def save(self, model_name=None):
         if not self.get_load_status():
             raise GroceryNotTrainException()
-        self.model.save(self.name, force=True)
+        if model_name:
+            self.model.save(model_name, force=True)
+        else:
+            self.model.save(self.name, force=True)
 
-    def load(self):
-        text_converter = GroceryTextConverter(custom_tokenize=self.custom_tokenize)
+    def load(self, model_name=None):
+        text_converter = GroceryTextConverter(
+            custom_tokenize=self.custom_tokenize)
         self.model = GroceryTextModel(text_converter)
-        self.model.load(self.name)
+        if model_name:
+            self.model.load(model_name)
+        else:
+            self.model.load(self.name)
 
     def __del__(self):
         if self.train_svm_file and os.path.exists(self.train_svm_file):
